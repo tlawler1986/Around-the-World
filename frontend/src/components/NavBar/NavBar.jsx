@@ -18,10 +18,10 @@ export default function NavBar({ user, setUser }) {
       {user ? (
         <>
           <NavLink to="/posts" end>
-            Post List
+            Journeys
           </NavLink>
           &nbsp; | &nbsp;
-          <NavLink to="/posts/new">New Post</NavLink>
+          <NavLink to="/posts/new">New Journey</NavLink>
           &nbsp; | &nbsp;
           <Link to="/" onClick={handleLogOut}>Log Out</Link>
           <span>Welcome, {user.name}</span>

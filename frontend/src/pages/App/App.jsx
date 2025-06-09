@@ -12,20 +12,25 @@ import './App.css';
 export default function App() {
   const [user, setUser] = useState(getUser());
 
+function handleLogOut() {
+  authService.logOut(); 
+  setUser(null); 
+  }
+
   return (
     <main className="App">
       <NavBar user={user} setUser={setUser} />
       <section id="main-section">
         {user ? (
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomePage user={user} handleLogOut={handleLogOut} />} />
             <Route path="/posts" element={<PostListPage />} />
             <Route path="/posts/new" element={<NewPostPage />} />
             <Route path="*" element={null} />
           </Routes>
         ) : (
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomePage user={user} handleLogOut={handleLogOut} />} />
             <Route path="/signup" element={<SignUpPage setUser={setUser} />} />
             <Route path="/login" element={<LogInPage setUser={setUser} />} />
             <Route path="*" element={null} />
