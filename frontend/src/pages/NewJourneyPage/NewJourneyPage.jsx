@@ -26,7 +26,7 @@ export default function NewJourneyPage({ userId }) {
         "mode of transportation": mode,
       };
       await journeyService.create(payload);
-      navigate('/journeys'); 
+      navigate('/posts'); 
     } catch (err) {
       setErrorMsg('Adding Journey Failed');
     }

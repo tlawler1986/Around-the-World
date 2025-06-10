@@ -11,12 +11,11 @@ export default function LogInPage({ setUser }) {
   
   const navigate = useNavigate();
 
- async function handleSubmit(evt) {
+async function handleSubmit(evt) {
   evt.preventDefault();
   try {
-    const token = await authService.logIn(formData);
-    localStorage.setItem('token', token);  
-    setUser({}); 
+    const user = await authService.logIn(formData);  
+    setUser(user);  
     navigate('/posts');
   } catch (err) {
     setErrorMsg('Log In Failed - Try Again');

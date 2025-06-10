@@ -16,16 +16,27 @@ export async function logIn(credentials) {
 
 export function getUser() {
   const token = getToken();
-  return token ? JSON.parse(atob(token.split('.')[1])).user : null;
+  if (!token) return null;
+  try {
+    return JSON.parse(atob(token.split('.')[1])).user;
+  } catch (err) {
+    console.error("Error parsing token payload:", err);
+    return null;
+  }
 }
 
 export function getToken() {
-  // getItem returns null if there's no key
   const token = localStorage.getItem('token');
+  console.log('getToken() returns:', token);
   if (!token) return null;
-  const payload = JSON.parse(atob(token.split('.')[1]));
-  // A JWT's exp is expressed in seconds, not milliseconds, so convert
-  if (payload.exp * 1000 < Date.now()) {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    if (payload.exp * 1000 < Date.now()) {
+      localStorage.removeItem('token');
+      return null;
+    }
+  } catch (err) {
+    console.error('Error decoding token:', err);
     localStorage.removeItem('token');
     return null;
   }

@@ -1,66 +1,19 @@
-import sendRequest from "./sendRequest";
+import sendRequest from './sendRequest';
 
 const BASE_URL = '/api/steps';
 
-function getToken() {
-  return localStorage.getItem('token');
+export function getSteps() {
+  return sendRequest(BASE_URL);
 }
 
-export async function getSteps() {
-  const token = getToken();
-  if (!token) throw new Error('No auth token found');
-
-  const res = await fetch(BASE_URL, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  });
-  if (!res.ok) throw new Error('Failed to fetch steps');
-  return await res.json();
+export function create(stepData) {
+  return sendRequest(BASE_URL, 'POST', stepData);
 }
 
-export async function create(stepData) {
-  const token = getToken();
-  if (!token) throw new Error('No auth token found');
-
-  const res = await fetch(BASE_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-    body: JSON.stringify(stepData),
-  });
-  if (!res.ok) throw new Error('Failed to create step');
-  return await res.json();
+export function update(id, stepData) {
+  return sendRequest(`${BASE_URL}/${id}`, 'PUT', stepData);
 }
 
-export async function update(id, stepData) {
-  const token = getToken();
-  if (!token) throw new Error('No auth token found');
-
-  const res = await fetch(`${BASE_URL}/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-    body: JSON.stringify(stepData),
-  });
-  if (!res.ok) throw new Error('Failed to update step');
-  return await res.json();
-}
-
-export async function remove(id) {
-  const token = getToken();
-  if (!token) throw new Error('No auth token found');
-
-  const res = await fetch(`${BASE_URL}/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  });
-  if (!res.ok) throw new Error('Failed to delete step');
-  return await res.json();
+export function remove(id) {
+  return sendRequest(`${BASE_URL}/${id}`, 'DELETE');
 }
