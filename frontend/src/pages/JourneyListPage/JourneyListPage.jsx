@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import * as journeyService from '../../services/journeyService';
 import * as stepService from '../../services/stepService';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 export default function JourneyListPage({ userId }) {
@@ -70,7 +71,11 @@ export default function JourneyListPage({ userId }) {
     {journeys.length > 0 ? (
       journeys.map(journey => (
         <tr key={journey._id}>
-          <td>{journey.title || 'N/A'}</td>
+          <td>
+            <Link to={`/journeys/${journey._id}`}>
+              {journey.title || 'N/A'}
+            </Link>
+          </td>
           <td>{journey.start_location_id || 'N/A'}</td>
           <td>{journey.end_location_id || 'N/A'}</td>
           <td>{journey.distance_mi || 'N/A'}</td>
@@ -109,7 +114,11 @@ export default function JourneyListPage({ userId }) {
     {steps.length > 0 ? (
       steps.map(step => (
         <tr key={step._id}>
-          <td>{step.title || 'N/A'}</td>
+          <td>
+            <Link to={`/steps/${step._id}`}>
+              {step.title || 'N/A'}
+            </Link>
+          </td>
           <td>{step.steps || 'N/A'}</td>
           <td>{step.date ? new Date(step.date).toLocaleDateString() : 'N/A'}</td>
         </tr>

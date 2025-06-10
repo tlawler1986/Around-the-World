@@ -20,7 +20,7 @@ export default function NewStepPage({ userId }) {
         date,
       };
       await stepService.create(payload);
-      navigate('/posts');
+      navigate('/journeys');
     } catch (err) {
       setErrorMsg('Adding Steps Failed');
     }

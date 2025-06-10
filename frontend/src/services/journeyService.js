@@ -6,6 +6,10 @@ export function index() {
   return sendRequest(BASE_URL);
 }
 
+export function getJourneyById(id) {
+  return sendRequest(`${BASE_URL}/${id}`);
+}
+
 export function create(journeyData) {
   return sendRequest(BASE_URL, 'POST', journeyData);
 }
