@@ -14,7 +14,6 @@ export default function JourneyListPage({ userId }) {
       console.log('Starting fetchData with userId:', userId);
       setLoading(true);
       try {
-        console.log('Fetching journeys...');
         const journeysData = await journeyService.index();
         console.log('Journeys data:', journeysData);
         setJourneys(journeysData || []);
@@ -25,7 +24,6 @@ export default function JourneyListPage({ userId }) {
         setJourneys([]);
       }
       try {
-        console.log('Fetching steps...');
         const stepsData = await stepService.getSteps(userId);        
         console.log('Steps data:', stepsData);
         setSteps(stepsData || []);
@@ -44,7 +42,7 @@ export default function JourneyListPage({ userId }) {
   if (loading) {
     return <div>Loading...</div>;
   }
-
+  
   return (
     <>
       <h1>Journey List</h1>

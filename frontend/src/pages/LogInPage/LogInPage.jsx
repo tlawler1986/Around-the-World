@@ -11,16 +11,17 @@ export default function LogInPage({ setUser }) {
   
   const navigate = useNavigate();
 
-  async function handleSubmit(evt) {
-    evt.preventDefault();
-    try {
-      const user = await authService.logIn(formData);
-      setUser(user);
-      navigate('/posts');
-    } catch (err) {
-      setErrorMsg('Log In Failed - Try Again');
-    }
+ async function handleSubmit(evt) {
+  evt.preventDefault();
+  try {
+    const token = await authService.logIn(formData);
+    localStorage.setItem('token', token);  
+    setUser({}); 
+    navigate('/posts');
+  } catch (err) {
+    setErrorMsg('Log In Failed - Try Again');
   }
+}
 
   function handleChange(evt) {
     setFormData({ ...formData, [evt.target.name]: evt.target.value });

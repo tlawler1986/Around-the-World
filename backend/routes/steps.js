@@ -8,12 +8,8 @@ router.use(ensureLoggedIn);
 
 // GET /api/steps
 router.get('/', async (req, res) => {
-  const userId = req.query.user_id;
-  console.log('Steps route received user_id:', userId); 
-  if (!userId) {
-    return res.status(400).json({ error: 'user_id is required' });
-  }
   try {
+    const userId = req.user._id;
     const steps = await Step.find({ user_id: userId });
     res.json(steps);
   } catch (error) {

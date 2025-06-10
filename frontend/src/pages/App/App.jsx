@@ -24,7 +24,7 @@ function handleLogOut() {
         {user ? (
           <Routes>
             <Route path="/" element={<HomePage user={user} handleLogOut={handleLogOut} />} />
-            <Route path="/posts" element={<JourneyListPage />} />
+            <Route path="/posts" element={<JourneyListPage userId={user?._id} />} />
             <Route path="/posts/new" element={<NewJourneyPage />} />
             <Route path="*" element={null} />
           </Routes>
