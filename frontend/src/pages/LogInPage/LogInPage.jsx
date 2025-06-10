@@ -16,7 +16,7 @@ async function handleSubmit(evt) {
   try {
     const user = await authService.logIn(formData);  
     setUser(user);  
-    navigate('/posts');
+    navigate('/journeys');
   } catch (err) {
     setErrorMsg('Log In Failed - Try Again');
   }

@@ -5,6 +5,7 @@ const app = express();
 const stepRouter = require('./routes/steps'); 
 const journeyRouter = require('./routes/journeys');
 const cors = require('cors');
+const totalTraveledRouter = require('./routes/totalTraveled');
 
 // Process the secrets/config vars in .env
 require('dotenv').config();
@@ -30,6 +31,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/posts', require('./routes/posts'));
 app.use('/api/journeys', require('./routes/journeys'));
 app.use('/api/steps', require('./routes/steps'));
+app.use('/api', totalTraveledRouter);
 
 
 // Use a "catch-all" route to deliver the frontend's production index.html
