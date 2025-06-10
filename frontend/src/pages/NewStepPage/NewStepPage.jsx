@@ -4,7 +4,7 @@ import * as stepService from '../../services/stepService';
 
 export default function NewStepPage({ userId }) {
   const [title, setTitle] = useState('');
-  const [steps, setSteps] = useState('');
+  const [stepCount, setStepCount] = useState('');
   const [date, setDate] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -16,11 +16,11 @@ export default function NewStepPage({ userId }) {
       const payload = {
         user_id: userId,
         title,
-        steps: Number(steps),
+        steps: Number(stepCount),
         date,
       };
       await stepService.create(payload);
-      navigate('/steps'); 
+      navigate('/posts');
     } catch (err) {
       setErrorMsg('Adding Steps Failed');
     }
@@ -30,6 +30,7 @@ export default function NewStepPage({ userId }) {
     <>
       <h2>Add Steps</h2>
       <form onSubmit={handleSubmit}>
+
         <label>Title</label>
         <input
           type="text"
@@ -41,8 +42,8 @@ export default function NewStepPage({ userId }) {
         <label>Number of Steps</label>
         <input
           type="number"
-          value={steps}
-          onChange={e => setSteps(e.target.value)}
+          value={stepCount}
+          onChange={e => setStepCount(e.target.value)}
           min="0"
           required
         />

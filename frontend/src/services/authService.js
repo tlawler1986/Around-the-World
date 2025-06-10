@@ -20,14 +20,12 @@ export function getUser() {
   try {
     return JSON.parse(atob(token.split('.')[1])).user;
   } catch (err) {
-    console.error("Error parsing token payload:", err);
     return null;
   }
 }
 
 export function getToken() {
   const token = localStorage.getItem('token');
-  console.log('getToken() returns:', token);
   if (!token) return null;
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));

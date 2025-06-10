@@ -4,6 +4,7 @@ import { getUser } from '../../services/authService';
 import HomePage from '../HomePage/HomePage';
 import JourneyListPage from '../JourneyListPage/JourneyListPage';
 import NewJourneyPage from '../NewJourneyPage/NewJourneyPage';
+import NewStepPage from '../NewStepPage/NewStepPage';
 import SignUpPage from '../SignUpPage/SignUpPage';
 import LogInPage from '../LogInPage/LogInPage';
 import NavBar from '../../components/NavBar/NavBar';
@@ -25,7 +26,8 @@ function handleLogOut() {
           <Routes>
             <Route path="/" element={<HomePage user={user} handleLogOut={handleLogOut} />} />
             <Route path="/posts" element={<JourneyListPage userId={user?._id} />} />
-            <Route path="/posts/new" element={<NewJourneyPage />} />
+            <Route path="/journeys/new" element={<NewJourneyPage userId={user?.id}/>} />
+            <Route path="/steps/new" element={<NewStepPage userId={user?.id} />} />
             <Route path="*" element={null} />
           </Routes>
         ) : (
