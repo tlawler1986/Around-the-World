@@ -34,5 +34,4 @@ export default function NavBar({ user, setUser }) {
         </>
       )}
     </nav>
-  );
-}
+  );}

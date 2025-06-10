@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Routes, Route } from 'react-router';
 import { getUser } from '../../services/authService';
 import HomePage from '../HomePage/HomePage';
-import PostListPage from '../PostListPage/PostListPage';
-import NewPostPage from '../NewPostPage/NewPostPage';
+import JourneyListPage from '../JourneyListPage/JourneyListPage';
+import NewJourneyPage from '../NewJourneyPage/NewJourneyPage';
 import SignUpPage from '../SignUpPage/SignUpPage';
 import LogInPage from '../LogInPage/LogInPage';
 import NavBar from '../../components/NavBar/NavBar';
@@ -24,8 +24,8 @@ function handleLogOut() {
         {user ? (
           <Routes>
             <Route path="/" element={<HomePage user={user} handleLogOut={handleLogOut} />} />
-            <Route path="/posts" element={<PostListPage />} />
-            <Route path="/posts/new" element={<NewPostPage />} />
+            <Route path="/posts" element={<JourneyListPage />} />
+            <Route path="/posts/new" element={<NewJourneyPage />} />
             <Route path="*" element={null} />
           </Routes>
         ) : (
