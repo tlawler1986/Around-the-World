@@ -11,7 +11,7 @@ export default function NavBar({ user, setUser }) {
     // The <Link> that was clicked will navigate to "/"
   }
 
-  return (
+   return (
     <nav className="NavBar">
       <NavLink to="/">Home</NavLink>
       &nbsp; | &nbsp;
@@ -26,7 +26,13 @@ export default function NavBar({ user, setUser }) {
           <NavLink to="/steps/new">Add Steps</NavLink>
           &nbsp; | &nbsp;
           <Link to="/" onClick={handleLogOut}>Log Out</Link>
-          <span>Welcome, {user.name}</span>
+          &nbsp; | &nbsp;
+          <span>
+            Welcome,{' '}
+            <Link to="/total" style={{ textDecoration: 'underline', color: 'blue' }}>
+              {user.name}
+            </Link>
+          </span>
         </>
       ) : (
         <>

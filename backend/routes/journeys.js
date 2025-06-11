@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Journey = require('../models/Journey'); 
 const ensureLoggedIn = require('../middleware/ensureLoggedIn');
+const Step = require('../models/Step'); 
+const User = require('../models/user');
+const { awardBadges } = require('../models/Badge'); 
+
 
 router.use(ensureLoggedIn);
 
@@ -17,12 +21,21 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST /api/journeys - create journey for logged-in user
+// POST /api/journeys - create journey for logged-in user, award badges based on total miles
 router.post('/', async (req, res) => {
   try {
     const journeyData = { ...req.body, user_id: req.user._id };
     const journey = new Journey(journeyData);
     const savedJourney = await journey.save();
+    // Calculate total miles for this user
+    const journeys = await Journey.find({ user_id: req.user._id });
+    const steps = await Step.find({ user_id: req.user._id });
+
+    const journeyMiles = journeys.reduce((sum, j) => sum + (j.distance_mi || 0), 0);
+    const totalSteps = steps.reduce((sum, s) => sum + (s.steps || 0), 0);
+    const stepMiles = (totalSteps * 2.5) / 5280;
+    const totalMilesTraveled = journeyMiles + stepMiles;
+    await awardBadges(req.user._id, totalMilesTraveled); 
     res.status(201).json(savedJourney);
   } catch (error) {
     console.error('Error creating journey:', error);

@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Step = require('../models/Step');
 const ensureLoggedIn = require('../middleware/ensureLoggedIn');
+const Journey = require('../models/Journey');
+const User = require('../models/user');
+const { awardBadges } = require('../models/Badge');
 
 // Protect all routes
 router.use(ensureLoggedIn);
@@ -17,16 +20,30 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST /api/steps - create a new step for the logged-in user
+// POST /api/steps - create a new step for the logged-in user/ Award badges based on total miles
 router.post('/', async (req, res) => {
   try {
-    const stepData = { ...req.body, user_id: req.user._id };
+    const userId = req.user._id;
+
+    const stepData = { ...req.body, user_id: userId };
     const newStep = new Step(stepData);
     const savedStep = await newStep.save();
+
+    const [allSteps, allJourneys] = await Promise.all([
+      Step.find({ user_id: userId }),
+      Journey.find({ user_id: userId }),
+    ]);
+    const totalSteps = allSteps.reduce((sum, s) => sum + (s.steps || 0), 0);
+    const stepMiles = (totalSteps * 2.5) / 5280;
+    const journeyMiles = allJourneys.reduce((sum, j) => sum + (j.distance_mi || 0), 0);
+    const totalMilesTraveled = stepMiles + journeyMiles;
+
+    await awardBadges(userId, totalMilesTraveled);
+
     res.status(201).json(savedStep);
   } catch (error) {
-    console.error('Error creating step:', error);
-    res.status(500).json({ error: 'Failed to create step' });
+    console.error('Error creating step or awarding badge:', error);
+    res.status(500).json({ error: 'Failed to create step or award badge' });
   }
 });
 

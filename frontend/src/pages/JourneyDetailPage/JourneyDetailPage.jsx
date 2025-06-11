@@ -79,7 +79,7 @@ export default function JourneyDetailPage() {
   async function handleDelete() {
     try {
       await journeyService.remove(id);
-      navigate('/posts');
+      navigate('/journeys');
     } catch {
       setError('Failed to delete journey');
     }
