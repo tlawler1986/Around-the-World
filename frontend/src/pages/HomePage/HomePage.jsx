@@ -9,29 +9,29 @@ export default function HomePage({ user, handleLogOut }) {
   const [userCount, setUserCount] = useState(null);
 
   useEffect(() => {
- async function fetchTotals() {
-  try {
-    setLoading(true);
-    const res = await fetch('/api/totalTraveled');
-    if (!res.ok) throw new Error('Failed to load total traveled data');
-    const data = await res.json();
-    setTotalJourneyMiles(data.totalJourneyMiles);
-    setTotalSteps(data.totalSteps);
-    const userRes = await fetch('/api/userCount');
-    if (!userRes.ok) throw new Error('Failed to load user count');
-    const userData = await userRes.json();
-    setUserCount(userData.userCount);
-    setError(null);
-  } catch (err) {
-    setError(err.message);
-  } finally {
-    setLoading(false);
-  }
-}
-    fetchTotals();
-  }
-  , []);
+    async function fetchTotals() {
+      try {
+        setLoading(true);
+        const res = await fetch('/api/totalTraveled');
+        if (!res.ok) throw new Error('Failed to load total traveled data');
+        const data = await res.json();
+        setTotalJourneyMiles(data.totalJourneyMiles);
+        setTotalSteps(data.totalSteps);
 
+        const userRes = await fetch('/api/userCount');
+        if (!userRes.ok) throw new Error('Failed to load user count');
+        const userData = await userRes.json();
+        setUserCount(userData.userCount);
+
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchTotals();
+  }, []);
 
   const feetPerStep = 2.5;
   const totalStepMiles = (totalSteps * feetPerStep) / 5280;
@@ -45,51 +45,39 @@ export default function HomePage({ user, handleLogOut }) {
       <h1>Around the World</h1>
 
       {!user && (
-        <>
-          <p>
-            Are you an avid traveler, or someone that just keeps track of their daily steps?
-            Well, this is a fun little app that takes those distances and computes how many times
-            you have traveled around the globe.
-          </p>
-          <p>
-            After creating an account, you will be able to see your contribution to the total number
-            of distances traveled by all users on this site.
-          </p>
-        </>
+        <p>
+          Are you an avid traveler, or someone that just keeps track of their daily steps? Well, this
+          is a fun little app that takes those distances and computes how many times you have traveled
+          around the globe.
+        </p>
       )}
 
       {loading && <p>Loading total traveled stats...</p>}
       {error && <p style={{ color: 'red' }}>Error: {error}</p>}
 
       {!loading && !error && (
-        <section style={{ marginTop: '2rem', borderTop: '1px solid #ccc', paddingTop: '1rem' }}>
+        <section
+          style={{ marginTop: '2rem', borderTop: '1px solid #ccc', paddingTop: '1rem' }}
+        >
           <h2>Total Distance Traveled by {userCount ?? '...'} Users</h2>
-          <p><strong>{totalMilesTraveled.toFixed(2)}</strong> miles traveled collectively.</p>
+          <p>
+            <strong>{totalMilesTraveled.toFixed(2)}</strong> miles traveled collectively.
+          </p>
           <p>That's about <strong>{timesAroundEarth.toFixed(2)}</strong> times around the Earth!</p>
           <p>Or <strong>{percentageAroundEarth}%</strong> of the way around the globe.</p>
         </section>
       )}
 
-      <div style={{ marginTop: '2rem' }}>
-       {user ? (
-        <span>
-          Welcome{' '}
-          <Link to="/total" style={{ textDecoration: 'underline', color: 'blue' }}>
-            <strong>{user.name || user.email}</strong>
+      {!user && (
+        <div style={{ marginTop: '2rem' }}>
+          <Link to="/signup">
+            <button>How Far have I traveled?</button>
           </Link>
-          !
-        </span>
-      ) : (
-          <>
-            <Link to="/signup">
-              <button>How Far have I traveled?</button>
-            </Link>
-            <Link to="/login" style={{ marginLeft: '1rem' }}>
-              <button>Login</button>
-            </Link>
-          </>
-        )}
-      </div>
+          <Link to="/login" style={{ marginLeft: '1rem' }}>
+            <button>Login</button>
+          </Link>
+        </div>
+      )}
     </main>
-  );
-}
+  );}
+

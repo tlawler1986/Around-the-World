@@ -1,8 +1,10 @@
 import { NavLink, Link, useNavigate } from 'react-router';
 import { logOut } from '../../services/authService';
 import './NavBar.css';
+import { badgeIcons } from '../../pages/TotalJourneyPage/TotalJourneyPage';
+import * as badgeService from '../../services/badgeService';
 
-export default function NavBar({ user, setUser }) {
+export default function NavBar({ user, setUser, latestBadge }) {
   const navigate = useNavigate();
 
   function handleLogOut() {
@@ -11,7 +13,7 @@ export default function NavBar({ user, setUser }) {
     // The <Link> that was clicked will navigate to "/"
   }
 
-   return (
+    return (
     <nav className="NavBar">
       <NavLink to="/">Home</NavLink>
       &nbsp; | &nbsp;
@@ -32,6 +34,16 @@ export default function NavBar({ user, setUser }) {
             <Link to="/total" style={{ textDecoration: 'underline', color: 'blue' }}>
               {user.name}
             </Link>
+            {latestBadge && (
+              <span
+                title={`Latest Badge: ${latestBadge.level} — Earned on ${new Date(latestBadge.earnedAt).toLocaleDateString()}`}
+                style={{ marginLeft: '8px', fontSize: '1.3rem', verticalAlign: 'middle' }}
+                aria-label={`Badge: ${latestBadge.level}`}
+                role="img"
+              >
+                {badgeIcons[latestBadge.level] || '🏅'}
+              </span>
+            )}
           </span>
         </>
       ) : (
@@ -43,3 +55,4 @@ export default function NavBar({ user, setUser }) {
       )}
     </nav>
   );}
+

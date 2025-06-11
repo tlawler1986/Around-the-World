@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router';
 import { getUser } from '../../services/authService';
+import * as badgeService from '../../services/badgeService';
 import HomePage from '../HomePage/HomePage';
 import JourneyListPage from '../JourneyListPage/JourneyListPage';
 import NewJourneyPage from '../NewJourneyPage/NewJourneyPage';
@@ -15,6 +16,34 @@ import './App.css';
 
 export default function App() {
   const [user, setUser] = useState(getUser());
+  const [latestBadge, setLatestBadge] = useState(null);
+
+
+  useEffect(() => {
+    async function fetchLatestBadge() {
+      if (!user) {
+        setLatestBadge(null);
+        return;
+      }
+      try {
+        const badgeData = await badgeService.getBadges();
+        const badges = badgeData.badges || [];
+        if (badges.length > 0) {
+          const latest = badges.reduce((latest, badge) =>
+            new Date(badge.earnedAt) > new Date(latest.earnedAt) ? badge : latest,
+            badges[0]
+          );
+          setLatestBadge(latest);
+        } else {
+          setLatestBadge(null);
+        }
+      } catch (err) {
+        console.error('Failed to fetch badges:', err);
+        setLatestBadge(null);
+      }
+    }
+    fetchLatestBadge();
+  }, [user]);
 
 function handleLogOut() {
   authService.logOut(); 
@@ -23,7 +52,7 @@ function handleLogOut() {
 
   return (
     <main className="App">
-      <NavBar user={user} setUser={setUser} />
+      <NavBar user={user} setUser={setUser} latestBadge={latestBadge} />
       <section id="main-section">
         {user ? (
           <Routes>

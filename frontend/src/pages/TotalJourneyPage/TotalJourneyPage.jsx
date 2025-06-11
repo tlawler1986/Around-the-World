@@ -4,6 +4,22 @@ import * as stepService from '../../services/stepService';
 import * as badgeService from '../../services/badgeService';
 import { useNavigate } from 'react-router-dom';
 
+export const badgeIcons = {
+    '1/4 Way Around': '🌍',
+    'Halfway There': '🛤️',
+    'Almost There': '🚀',
+    '1x Around Earth': '🌎',
+    '2x Around Earth': '🌏',
+    '3x Around Earth': '✈️',
+    '4x Around Earth': '🚢',
+    '5x Around Earth': '🚴‍♂️',
+    '6x Around Earth': '🏆',
+    '7x Around Earth': '🥇',
+    '8x Around Earth': '🥈',
+    '9x Around Earth': '🥉',
+    '10x Around Earth': '🌟',
+};
+
 export default function TotalJourneyPage({ userId }) {
   const [journeys, setJourneys] = useState([]);
   const [steps, setSteps] = useState([]);
@@ -49,6 +65,12 @@ useEffect(() => {
   const timesAroundEarth = totalMilesTraveled / earthCircumference;
   const percentageAroundEarth = (timesAroundEarth * 100).toFixed(2);
 
+  const latestBadge = badges.length > 0
+  ? badges.reduce((latest, badge) => {
+      return new Date(badge.earnedAt) > new Date(latest.earnedAt) ? badge : latest;
+    }, badges[0])
+  : null;
+
   return (
     <div style={{ padding: '20px' }}>
       <h1>Total Journey Stats</h1>
@@ -63,18 +85,18 @@ useEffect(() => {
 
       <hr />
 
-      <h2>Your Badges</h2>
-      {Array.isArray (badges) && badges.length === 0 ? (
-        <p>No badges earned yet. Keep Traveling!</p>
+    <h2>Your Latest Badge</h2>
+      {latestBadge ? (
+        <div>
+          <span style={{ fontSize: '1.5rem', marginRight: '8px' }}>
+            {badgeIcons[latestBadge.level] || '🏅'}
+          </span>
+           <strong>{latestBadge.level}</strong> — Earned on {new Date(latestBadge.earnedAt).toLocaleDateString()}
+        </div>
       ) : (
-        <ul>
-          {Array.isArray(badges) && badges.map(badge => (
-            <li key={badge._id}>
-              <strong>{badge.level}</strong> — Earned on {new Date(badge.earnedAt).toLocaleDateString()}
-            </li>
-          ))}
-        </ul>
+        <p>No badges earned yet. Keep Traveling!</p>
       )}
+
       {newBadges.length > 0 && (
         <>
           <hr />
@@ -82,6 +104,9 @@ useEffect(() => {
           <ul style={{ color: 'green', fontWeight: 'bold' }}>
             {newBadges.map(badge => (
               <li key={badge._id}>
+                <span style={{ fontSize: '1.3rem', marginRight: '6px' }}>
+                  {badgeIcons[badge.level] || '🏅'}
+                </span>
                 {badge.level} — Earned on {new Date(badge.earnedAt).toLocaleDateString()}
               </li>
             ))}

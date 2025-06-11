@@ -10,7 +10,6 @@ router.use(ensureLoggedIn);
 router.get('/', async (req, res) => {
   try {
     const userId = req.user._id;
-    console.log('Calculating badges for user:', userId);
 
     const journeys = await Journey.find({ user_id: userId });
     const steps = await Step.find({ user_id: userId });
