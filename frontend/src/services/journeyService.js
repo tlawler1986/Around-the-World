@@ -21,3 +21,7 @@ export function update(id, journeyData) {
 export function remove(id) {
   return sendRequest(`${BASE_URL}/${id}`, 'DELETE');
 }
+
+export function getJourneysByUserId(userId) {
+  return sendRequest(`/api/journeys/user/${userId}`);
+}

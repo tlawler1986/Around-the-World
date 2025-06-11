@@ -23,7 +23,7 @@ export default function JourneyListPage({ userId }) {
     async function fetchData() {
       setLoading(true);
       try {
-        const journeysData = await journeyService.index();
+        const journeysData = await journeyService.getJourneysByUserId(userId);
         setJourneys(journeysData || []);
         setJourneysError(null);
       } catch (error) {

@@ -1,12 +1,39 @@
 const express = require('express');
 const router = express.Router();
-const Journey = require('../models/Journey'); 
+const Journey = require('../models/Journey');
 const ensureLoggedIn = require('../middleware/ensureLoggedIn');
-const Step = require('../models/Step'); 
-const User = require('../models/user');
-const { awardBadges } = require('../models/Badge'); 
+const Step = require('../models/Step');
+const { awardBadges } = require('../models/Badge');
 
+// ----------- PUBLIC ROUTES -----------
 
+// GET /api/journeys/user/:userId - get all journeys by a specific user (public)
+router.get('/user/:userId', async (req, res) => {
+  try {
+    const journeys = await Journey.find({ user_id: req.params.userId });
+    res.json(journeys);
+  } catch (error) {
+    console.error('Error fetching journeys for user:', error);
+    res.status(500).json({ error: 'Failed to fetch journeys' });
+  }
+});
+
+// GET /api/journeys/:id - get one journey by id (public)
+router.get('/:id', async (req, res) => {
+  try {
+    const journey = await Journey.findById(req.params.id);
+    if (!journey) {
+      return res.status(404).json({ error: 'Journey not found' });
+    }
+    res.json(journey);
+  } catch (error) {
+    console.error('Error fetching journey:', error);
+    res.status(500).json({ error: 'Failed to fetch journey' });
+  }
+});
+
+// ----------- PROTECTED ROUTES -----------
+// all routes below require login
 router.use(ensureLoggedIn);
 
 // GET /api/journeys - get journeys for logged-in user
@@ -27,6 +54,7 @@ router.post('/', async (req, res) => {
     const journeyData = { ...req.body, user_id: req.user._id };
     const journey = new Journey(journeyData);
     const savedJourney = await journey.save();
+
     // Calculate total miles for this user
     const journeys = await Journey.find({ user_id: req.user._id });
     const steps = await Step.find({ user_id: req.user._id });
@@ -35,25 +63,12 @@ router.post('/', async (req, res) => {
     const totalSteps = steps.reduce((sum, s) => sum + (s.steps || 0), 0);
     const stepMiles = (totalSteps * 2.5) / 5280;
     const totalMilesTraveled = journeyMiles + stepMiles;
-    await awardBadges(req.user._id, totalMilesTraveled); 
+    await awardBadges(req.user._id, totalMilesTraveled);
+
     res.status(201).json(savedJourney);
   } catch (error) {
     console.error('Error creating journey:', error);
     res.status(500).json({ error: 'Failed to create journey' });
-  }
-});
-
-// GET /api/journeys/:id - get one journey owned by logged-in user
-router.get('/:id', async (req, res) => {
-  try {
-    const journey = await Journey.findOne({ _id: req.params.id, user_id: req.user._id });
-    if (!journey) {
-      return res.status(404).json({ error: 'Journey not found' });
-    }
-    res.json(journey);
-  } catch (error) {
-    console.error('Error fetching journey:', error);
-    res.status(500).json({ error: 'Failed to fetch journey' });
   }
 });
 
@@ -66,7 +81,7 @@ router.put('/:id', async (req, res) => {
       { new: true, runValidators: true }
     );
     if (!journey) {
-      return res.status(404).json({ error: 'Journey not found' });
+      return res.status(404).json({ error: 'Journey not found or not owned by user' });
     }
     res.json(journey);
   } catch (error) {
@@ -80,7 +95,7 @@ router.delete('/:id', async (req, res) => {
   try {
     const journey = await Journey.findOneAndDelete({ _id: req.params.id, user_id: req.user._id });
     if (!journey) {
-      return res.status(404).json({ error: 'Journey not found' });
+      return res.status(404).json({ error: 'Journey not found or not owned by user' });
     }
     res.json({ message: 'Journey deleted successfully' });
   } catch (error) {
@@ -90,3 +105,4 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
+

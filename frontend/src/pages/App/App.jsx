@@ -13,6 +13,8 @@ import StepDetailPage from '../StepDetailPage/StepDetailPage';
 import TotalJourneyPage from '../TotalJourneyPage/TotalJourneyPage';
 import SignUpPage from '../SignUpPage/SignUpPage';
 import LogInPage from '../LogInPage/LogInPage';
+import CommunityPage from '../CommunityPage/CommunityPage';
+import UserJourneysPage from '../UserJourneysPage/UserJourneysPage';
 import NavBar from '../../components/NavBar/NavBar';
 import './App.css';
 
@@ -67,6 +69,8 @@ function handleLogOut() {
             <Route path="/steps/:id" element={<StepEditPage />} />
             <Route path="/total" element={<TotalJourneyPage userId={user?.id} />} />
             <Route path="/steps/:id/detail" element={<StepDetailPage />} />
+            <Route path="/community" element={<CommunityPage />} />
+            <Route path="/users/:id/journeys" element={<UserJourneysPage />} />
             <Route path="*" element={null} />
           </Routes>
         ) : (

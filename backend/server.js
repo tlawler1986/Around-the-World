@@ -33,6 +33,7 @@ app.use('/api/journeys', require('./routes/journeys'));
 app.use('/api/steps', require('./routes/steps'));
 app.use('/api', totalTraveledRouter);
 app.use('/api/badges', require('./routes/badges'));
+app.use('/api/users', require('./routes/users'));
 
 
 // Use a "catch-all" route to deliver the frontend's production index.html

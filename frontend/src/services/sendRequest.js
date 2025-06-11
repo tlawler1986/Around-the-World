@@ -3,18 +3,19 @@ import { getToken } from './authService';
 export default async function sendRequest(
   url,
   method = 'GET',
-  payload = null
+  payload = null,
+  customOptions = {}
 ) {
   // Fetch accepts an options object as the 2nd argument
   // used to include a data payload, set headers, specifiy the method, etc.
-  const options = { method, credentials: 'include' };
+  const options = { method, credentials: 'include', ...customOptions };
   // If payload is a FormData object (used to upload files),
   // fetch will automatically set the Content-Type to 'multipart/form-data',
   // otherwise set the Content-Type header as usual
   if (payload instanceof FormData) {
     options.body = payload;
   } else if (payload) {
-    options.headers = { 'Content-Type': 'application/json' };
+    options.headers = { 'Content-Type': 'application/json', ...options.headers };
     options.body = JSON.stringify(payload);
   }
   const token = getToken();

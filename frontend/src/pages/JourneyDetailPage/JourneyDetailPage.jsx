@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import * as journeyService from '../../services/journeyService';
 
 export default function JourneyDetailPage() {
   const { id } = useParams();
+  const location = useLocation();
+  const readOnly = location.state?.readOnly || false; 
   const [journey, setJourney] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -151,9 +153,13 @@ export default function JourneyDetailPage() {
       </table>
 
       <div style={{ display: 'flex', justifyContent: 'center', gap: '15px' }}>
-        <button onClick={handleEditJourney}>✏️ Edit Journey</button>
-        <button onClick={handleBackToJourneys}>⬅️ Back to Journeys</button>
+        {!readOnly && (
+          <>
+          <button onClick={handleEditJourney}>✏️ Edit Journey</button>
+          <button onClick={handleBackToJourneys}>⬅️ Back to Journeys</button>
+          </>
+        )}
       </div>
     </div>
-  );
-}
+  );}
+
