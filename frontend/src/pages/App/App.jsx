@@ -6,7 +6,9 @@ import HomePage from '../HomePage/HomePage';
 import JourneyListPage from '../JourneyListPage/JourneyListPage';
 import NewJourneyPage from '../NewJourneyPage/NewJourneyPage';
 import NewStepPage from '../NewStepPage/NewStepPage';
+import JourneyEditPage from '../JourneyEditPage/JourneyEditPage';
 import JourneyDetailPage from '../JourneyDetailPage/JourneyDetailPage';
+import StepEditPage from '../StepEditPage/StepEditPage';
 import StepDetailPage from '../StepDetailPage/StepDetailPage';
 import TotalJourneyPage from '../TotalJourneyPage/TotalJourneyPage';
 import SignUpPage from '../SignUpPage/SignUpPage';
@@ -60,9 +62,11 @@ function handleLogOut() {
             <Route path="/journeys" element={<JourneyListPage userId={user?._id} />} />
             <Route path="/journeys/new" element={<NewJourneyPage userId={user?.id}/>} />
             <Route path="/steps/new" element={<NewStepPage userId={user?.id} />} />
-            <Route path="/journeys/:id" element={<JourneyDetailPage />} />
-            <Route path="/steps/:id" element={<StepDetailPage />} />
+            <Route path="/journeys/:id" element={<JourneyEditPage />} />
+            <Route path="/journeys/:id/detail" element={<JourneyDetailPage />} />
+            <Route path="/steps/:id" element={<StepEditPage />} />
             <Route path="/total" element={<TotalJourneyPage userId={user?.id} />} />
+            <Route path="/steps/:id/detail" element={<StepDetailPage />} />
             <Route path="*" element={null} />
           </Routes>
         ) : (

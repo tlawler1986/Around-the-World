@@ -51,7 +51,7 @@ export default function JourneyListPage({ userId }) {
     <div
       style={{
         display: 'flex',
-        height: '100vh',
+        minHeight: '100vh',
         alignItems: 'center',
         justifyContent: 'flex-start'
       }}
@@ -83,7 +83,8 @@ export default function JourneyListPage({ userId }) {
             Error: {journeysError}
           </div>
         )}
-        <table border="1" cellPadding="5" style={{ marginBottom: '20px', borderTop: 'none' }}>
+       <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
+          <table border="1" cellPadding="5" style={{ marginBottom: '20px', borderTop: 'none', minWidth: '600px' }}>
           <thead>
             <tr>
               <th>Title</th>
@@ -99,7 +100,7 @@ export default function JourneyListPage({ userId }) {
               journeys.map(journey => (
                 <tr key={journey._id}>
                   <td>
-                    <Link to={`/journeys/${journey._id}`}>
+                    <Link to={`/journeys/${journey._id}/detail`}>
                       {journey.title || 'N/A'}
                     </Link>
                   </td>
@@ -119,6 +120,8 @@ export default function JourneyListPage({ userId }) {
             )}
           </tbody>
         </table>
+        </div>
+        
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
           <button onClick={handleAddJourney}>➕ Add Journey</button>
         </div>
@@ -130,7 +133,7 @@ export default function JourneyListPage({ userId }) {
           </div>
         )}
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <table border="1" cellPadding="5">
+          <table border="1" cellPadding="5">
           <thead>
             <tr>
               <th>Title</th>
@@ -143,7 +146,7 @@ export default function JourneyListPage({ userId }) {
               steps.map(step => (
                 <tr key={step._id}>
                   <td>
-                    <Link to={`/steps/${step._id}`}>
+                    <Link to={`/steps/${step._id}/detail`}>
                       {step.title || 'N/A'}
                     </Link>
                   </td>
@@ -161,6 +164,7 @@ export default function JourneyListPage({ userId }) {
           </tbody>
         </table>
         </div>
+       
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
           <button onClick={handleAddStep}>➕ Add Step</button>
         </div>

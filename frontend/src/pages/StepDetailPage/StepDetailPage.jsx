@@ -1,129 +1,129 @@
-import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import * as stepService from '../../services/stepService';
 
-export default function StepDetailPage() {
+export default function StepDetailPage({ loggedInUsername }) {
   const { id } = useParams();
-  const navigate = useNavigate();
-
   const [step, setStep] = useState(null);
-  const [formData, setFormData] = useState({
-    title: '',
-    steps: '',
-    date: '',
-  });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [success, setSuccess] = useState(null);
+  const [newCommentText, setNewCommentText] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchStep() {
       try {
         const data = await stepService.getById(id);
         setStep(data);
-        setFormData({
-          title: data.title || '',
-          steps: data.steps || '',
-          date: data.date ? new Date(data.date).toISOString().slice(0, 10) : '',
-        });
-        setLoading(false);
-      } catch {
-        setError('Failed to load step');
+        setError(null);
+      } catch (err) {
+        setError('Step not found or API error');
+        setStep(null);
+      } finally {
         setLoading(false);
       }
     }
     fetchStep();
   }, [id]);
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  }
-
-  async function handleSubmit(e) {
+  async function handleAddComment(e) {
     e.preventDefault();
-    setSaving(true);
-    setError(null);
-    setSuccess(null);
+    if (!newCommentText.trim()) return;
+    setSubmitting(true);
+
     try {
-      const updatedStep = {
-        ...formData,
-        date: formData.date ? new Date(formData.date).toISOString() : null,
-      };
-      await stepService.update(id, updatedStep);
-      setSuccess('Step updated successfully!');
-      setSaving(false);
-      navigate('/journeys');
+      // This function should add the comment via your API and return the created comment object
+      const newComment = await stepService.addCommentToStep(id, {
+        username: loggedInUsername,
+        text: newCommentText.trim(),
+      });
+
+      setStep(prev => ({
+        ...prev,
+        comments: [...(prev.comments || []), newComment],
+      }));
+      setNewCommentText('');
     } catch {
-      setError('Failed to update step');
-      setSaving(false);
+      alert('Failed to add comment. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   }
 
-  async function handleDelete() {
-    try {
-      await stepService.remove(id);
-      navigate('/journeys');
-    } catch {
-      setError('Failed to delete step');
-    }
+  function handleEditStep() {
+    if (!step?._id) return;
+    navigate(`/steps/${step._id}`);
   }
 
-  if (loading) return <p>Loading...</p>;
+  function handleBackToSteps() {
+    navigate('/journeys');
+  }
+
+  if (loading) return <p>Loading step details...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
+  if (!step) return null;
 
   return (
-    <>
-      <h1>Edit Step</h1>
-      <form onSubmit={handleSubmit} style={{ maxWidth: '400px' }}>
-        <label>
-          Title:<br />
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <br />
-        <label>
-          Steps:<br />
-          <textarea
-            name="steps"
-            value={formData.steps}
-            onChange={handleChange}
-            required
-            rows={4}
-          />
-        </label>
-        <br />
-        <label>
-          Date:<br />
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <br /><br />
-        <button type="submit" disabled={saving}>
-          {saving ? 'Saving...' : 'Save Changes'}
-        </button>
-      </form>
+    <div style={{ padding: '20px', maxWidth: '700px', margin: 'auto' }}>
+      <h1>{step.title || 'N/A'}</h1>
 
-      <button
-        onClick={handleDelete}
-        style={{ color: 'red', marginTop: '20px' }}
-        disabled={saving}
-      >
-        🗑️ Delete Step
-      </button>
+      <table border="1" cellPadding="8" style={{ width: '100%', marginBottom: '20px' }}>
+        <tbody>
+          <tr>
+            <th style={{ textAlign: 'left' }}>Steps</th>
+            <td>{step.steps || 'N/A'}</td>
+          </tr>
+          <tr>
+            <th style={{ textAlign: 'left' }}>Date</th>
+            <td>{step.date ? new Date(step.date).toLocaleDateString() : 'N/A'}</td>
+          </tr>
+          {step.description && (
+            <tr>
+              <th style={{ textAlign: 'left' }}>Description</th>
+              <td>{step.description}</td>
+            </tr>
+          )}
+          <tr>
+            <th style={{ textAlign: 'left', verticalAlign: 'top' }}>Comments</th>
+            <td>
+              {step.comments && step.comments.length > 0 ? (
+                <ul style={{ marginTop: 0, paddingLeft: '20px' }}>
+                  {step.comments.map(comment => (
+                    <li key={comment._id || comment.id}>
+                      <strong>{comment.username || 'Anonymous'}:</strong> {comment.text || comment.content || 'No comment text.'}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No comments available.</p>
+              )}
 
-      {success && <p style={{ color: 'green' }}>{success}</p>}
-    </>
-  );
-}
+              <form onSubmit={handleAddComment} style={{ marginTop: '15px' }}>
+                <textarea
+                  value={newCommentText}
+                  onChange={e => setNewCommentText(e.target.value)}
+                  rows={3}
+                  cols={50}
+                  placeholder="Add a comment..."
+                  required
+                  disabled={submitting}
+                  style={{ resize: 'vertical' }}
+                />
+                <br />
+                <button type="submit" disabled={submitting} style={{ marginTop: '8px' }}>
+                  {submitting ? 'Submitting...' : 'Add Comment'}
+                </button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '15px' }}>
+        <button onClick={handleEditStep}>✏️ Edit Step</button>
+        <button onClick={handleBackToSteps}>⬅️ Back to Steps</button>
+      </div>
+    </div>
+  );}
+

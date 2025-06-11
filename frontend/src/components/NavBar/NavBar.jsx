@@ -17,6 +17,8 @@ export default function NavBar({ user, setUser, latestBadge }) {
     <nav className="NavBar">
       <NavLink to="/">Home</NavLink>
       &nbsp; | &nbsp;
+      <NavLink to="/community">Community</NavLink>
+      &nbsp; | &nbsp;
       {user ? (
         <>
           <NavLink to="/journeys" end>
