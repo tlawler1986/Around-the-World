@@ -26,7 +26,6 @@ export default function JourneyDetailPage() {
         const data = await journeyService.getJourneyById(id);
         setJourney(data);
 
-        // Initialize form data with journey values
         setFormData({
           title: data.title || '',
           start_location_id: data.start_location_id || '',
@@ -56,20 +55,17 @@ export default function JourneyDetailPage() {
     setError(null);
     setSuccess(null);
     try {
-      // Prepare data to send
       const updatedJourney = {
         ...formData,
-        // convert date string to ISO format if needed
         date: formData.date ? new Date(formData.date).toISOString() : null,
-        // Adjust property name for mode_of_transportation
         'mode of transportation': formData.mode_of_transportation,
       };
-      delete updatedJourney.mode_of_transportation; // remove camelCase duplicate
+      delete updatedJourney.mode_of_transportation; 
       
       await journeyService.update(id, updatedJourney);
       setSuccess('Journey updated successfully!');
       setSaving(false);
-      navigate('/journeys'); // redirect back to journey list or keep here based on preference
+      navigate('/journeys'); 
     } catch {
       setError('Failed to update journey');
       setSaving(false);
@@ -175,5 +171,5 @@ export default function JourneyDetailPage() {
 
       {success && <p style={{ color: 'green' }}>{success}</p>}
     </>
-  );
-}
+  );}
+

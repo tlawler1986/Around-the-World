@@ -41,9 +41,8 @@ export default function JourneyDetailPage() {
     navigate('/journeys');
   }
 
-  // Mock API call to add a comment, replace with your real service method
+  /* Mock API call to add a comment, replace with your real service method
   async function addComment(journeyId, username, text) {
-    // This simulates backend adding a comment and returning the updated journey or new comment
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({
@@ -52,8 +51,8 @@ export default function JourneyDetailPage() {
           text,
         });
       }, 500);
-    });
-  }
+    });} */
+  
 
   async function handleAddComment(e) {
     e.preventDefault();
@@ -62,13 +61,10 @@ export default function JourneyDetailPage() {
     setSubmitting(true);
     try {
       const newComment = await addComment(journey._id, newCommentUsername.trim(), newCommentText.trim());
-
-      // Add new comment to local state journey.comments
       setJourney(prev => ({
         ...prev,
         comments: [...(prev.comments || []), newComment],
       }));
-
       setNewCommentText('');
       // Optionally clear username or keep it
     } catch (err) {

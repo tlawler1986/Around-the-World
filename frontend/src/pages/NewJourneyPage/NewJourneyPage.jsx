@@ -100,5 +100,5 @@ export default function NewJourneyPage({ userId }) {
       </form>
       {errorMsg && <p className="error-message">{errorMsg}</p>}
     </>
-  );
-}
+  );}
+

@@ -11,12 +11,14 @@ export default function StepDetailPage() {
     title: '',
     steps: '',
     date: '',
+    location: '',
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(null);
 
+  console.log('Submitting step:', payload);
   useEffect(() => {
     async function fetchStep() {
       try {
@@ -24,6 +26,7 @@ export default function StepDetailPage() {
         setStep(data);
         setFormData({
           title: data.title || '',
+          location: data.location || '',
           steps: data.steps || '',
           date: data.date ? new Date(data.date).toISOString().slice(0, 10) : '',
         });
@@ -89,6 +92,17 @@ export default function StepDetailPage() {
         </label>
         <br />
         <label>
+          Location:<br />
+          <input
+            type="text"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            required
+          />
+        </label>
+      <br />
+        <label>
           Steps:<br />
           <textarea
             name="steps"
@@ -125,5 +139,6 @@ export default function StepDetailPage() {
 
       {success && <p style={{ color: 'green' }}>{success}</p>}
     </>
-  );
-}
+  );}
+
+

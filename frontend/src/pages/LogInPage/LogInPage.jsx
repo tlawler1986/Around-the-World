@@ -51,5 +51,4 @@ async function handleSubmit(evt) {
       </form>
       <p className="error-message">&nbsp;{errorMsg}</p>
     </>
-  );
-}
+  );}

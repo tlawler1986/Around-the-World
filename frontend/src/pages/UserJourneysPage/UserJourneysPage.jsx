@@ -4,7 +4,7 @@ import * as journeyService from '../../services/journeyService';
 import * as userService from '../../services/userService';
 
 export default function UserJourneysPage() {
-  const { id } = useParams(); // user id
+  const { id } = useParams();
   const navigate = useNavigate();
   const [journeys, setJourneys] = useState([]);
   const [owner, setOwner] = useState(null);

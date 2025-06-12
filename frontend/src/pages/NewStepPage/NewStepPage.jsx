@@ -7,6 +7,7 @@ export default function NewStepPage({ userId }) {
   const [stepCount, setStepCount] = useState('');
   const [date, setDate] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [location, setLocation] = useState('');
 
   const navigate = useNavigate();
 
@@ -16,6 +17,7 @@ export default function NewStepPage({ userId }) {
       const payload = {
         user_id: userId,
         title,
+        location,
         steps: Number(stepCount),
         date,
       };
@@ -36,6 +38,14 @@ export default function NewStepPage({ userId }) {
           type="text"
           value={title}
           onChange={e => setTitle(e.target.value)}
+          required
+        />
+
+        <label>Location</label>
+        <input
+          type="text"
+          value={location}
+          onChange={e => setLocation(e.target.value)}
           required
         />
 
@@ -60,5 +70,5 @@ export default function NewStepPage({ userId }) {
       </form>
       {errorMsg && <p className="error-message">{errorMsg}</p>}
     </>
-  );
-}
+  );}
+

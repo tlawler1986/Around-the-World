@@ -10,7 +10,7 @@ export default function StepDetailPage({ loggedInUsername }) {
   const [newCommentText, setNewCommentText] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     async function fetchStep() {
       try {
@@ -33,7 +33,6 @@ export default function StepDetailPage({ loggedInUsername }) {
     setSubmitting(true);
 
     try {
-      // This function should add the comment via your API and return the created comment object
       const newComment = await stepService.addCommentToStep(id, {
         username: loggedInUsername,
         text: newCommentText.trim(),
@@ -78,12 +77,10 @@ export default function StepDetailPage({ loggedInUsername }) {
             <th style={{ textAlign: 'left' }}>Date</th>
             <td>{step.date ? new Date(step.date).toLocaleDateString() : 'N/A'}</td>
           </tr>
-          {step.description && (
-            <tr>
-              <th style={{ textAlign: 'left' }}>Description</th>
-              <td>{step.description}</td>
-            </tr>
-          )}
+          <tr>
+            <th style={{ textAlign: 'left' }}>Location</th>
+            <td>{step.location || 'N/A'}</td>
+          </tr>
           <tr>
             <th style={{ textAlign: 'left', verticalAlign: 'top' }}>Comments</th>
             <td>

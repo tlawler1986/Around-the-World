@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link, UNSAFE_withHydrateFallbackProps } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import * as journeyService from '../../services/journeyService';
 import * as stepService from '../../services/stepService';
 
@@ -44,7 +44,7 @@ export default function JourneyListPage({ userId }) {
   }, [userId]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return 
   }
 
   return (
@@ -137,6 +137,7 @@ export default function JourneyListPage({ userId }) {
           <thead>
             <tr>
               <th>Title</th>
+              <th>Location</th>
               <th>Steps</th>
               <th>Date</th>
             </tr>
@@ -150,13 +151,14 @@ export default function JourneyListPage({ userId }) {
                       {step.title || 'N/A'}
                     </Link>
                   </td>
+                  <td>{step.location || 'N/A'}</td>
                   <td>{step.steps || 'N/A'}</td>
                   <td>{step.date ? new Date(step.date).toLocaleDateString() : 'N/A'}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="3" style={{ textAlign: 'center', fontStyle: 'italic' }}>
+                <td colSpan="4" style={{ textAlign: 'center', fontStyle: 'italic' }}>
                   {stepsError ? 'Unable to load steps' : 'No steps found.'}
                 </td>
               </tr>
