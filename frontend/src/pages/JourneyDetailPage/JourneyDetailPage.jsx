@@ -165,7 +165,7 @@ function handleDeleteComment(commentId) {
       </table>
     </section>
 
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '15px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginTop: '15px' }}>
         {!readOnly && (
           <>
           <button onClick={handleEditJourney}>✏️ Edit Journey</button>

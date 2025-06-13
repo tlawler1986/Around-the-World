@@ -33,12 +33,8 @@ export default function UserJourneysPage() {
       ) : (
         <>
           <section className="userjourney-section">
-            <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
-              <table
-                border="1"
-                cellPadding="5"
-                style={{ marginBottom: '20px', borderTop: 'none', minWidth: '600px' }}
-              >
+            <div className="table-wrapper">'
+              <table className="journey-table">
                 <thead>
                   <tr>
                     <th>Title</th>

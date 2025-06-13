@@ -74,46 +74,46 @@ useEffect(() => {
   return (
     <div style={{ padding: '20px' }}>
       <h1>Total Journey Stats</h1>
+      <section className="totalJourney-section">
+        <p>Total miles from journeys: <strong>{totalJourneyMiles.toFixed(2)}</strong> miles</p>
+        <p>Total steps taken: <strong>{totalSteps.toLocaleString()}</strong> steps</p>
+        <p>Converted steps to miles: <strong>{totalStepMiles.toFixed(2)}</strong> miles</p>
+        <hr />
 
-      <p>Total miles from journeys: <strong>{totalJourneyMiles.toFixed(2)}</strong> miles</p>
-      <p>Total steps taken: <strong>{totalSteps.toLocaleString()}</strong> steps</p>
-      <p>Converted steps to miles: <strong>{totalStepMiles.toFixed(2)}</strong> miles</p>
-      <hr />
-      <p><strong>Total miles traveled: {totalMilesTraveled.toFixed(2)} miles</strong></p>
-      <p>That’s equivalent to traveling around the Earth <strong>{timesAroundEarth.toFixed(2)}</strong> times.</p>
-      <p>Or <strong>{percentageAroundEarth}%</strong> of the way around the Earth.</p>
+        <p><strong>Total miles traveled: {totalMilesTraveled.toFixed(2)} miles</strong></p>
+        <p>That’s equivalent to traveling around the Earth <strong>{timesAroundEarth.toFixed(2)}</strong> times.</p>
+        <p>Or <strong>{percentageAroundEarth}%</strong> of the way around the Earth.</p>
+        <hr />
 
-      <hr />
+      <h2>Your Latest Badge</h2>
+        {latestBadge ? (
+          <div>
+            <span style={{ fontSize: '1.5rem', marginRight: '8px' }}>
+              {badgeIcons[latestBadge.level] || '🏅'}
+            </span>
+            <strong>{latestBadge.level}</strong> — Earned on {new Date(latestBadge.earnedAt).toLocaleDateString()}
+          </div>
+        ) : (
+          <p>No badges earned yet. Keep Traveling!</p>
+        )}
 
-    <h2>Your Latest Badge</h2>
-      {latestBadge ? (
-        <div>
-          <span style={{ fontSize: '1.5rem', marginRight: '8px' }}>
-            {badgeIcons[latestBadge.level] || '🏅'}
-          </span>
-           <strong>{latestBadge.level}</strong> — Earned on {new Date(latestBadge.earnedAt).toLocaleDateString()}
-        </div>
-      ) : (
-        <p>No badges earned yet. Keep Traveling!</p>
-      )}
-
-      {newBadges.length > 0 && (
-        <>
-          <hr />
-          <h3>🎉 New Badges Earned!</h3>
-          <ul style={{ color: 'green', fontWeight: 'bold' }}>
-            {newBadges.map(badge => (
-              <li key={badge._id}>
-                <span style={{ fontSize: '1.3rem', marginRight: '6px' }}>
-                  {badgeIcons[badge.level] || '🏅'}
-                </span>
-                {badge.level} — Earned on {new Date(badge.earnedAt).toLocaleDateString()}
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-
+        {newBadges.length > 0 && (
+          <>
+            <hr />
+            <h3>🎉 New Badges Earned!</h3>
+            <ul style={{ color: 'green', fontWeight: 'bold' }}>
+              {newBadges.map(badge => (
+                <li key={badge._id}>
+                  <span style={{ fontSize: '1.3rem', marginRight: '6px' }}>
+                    {badgeIcons[badge.level] || '🏅'}
+                  </span>
+                  {badge.level} — Earned on {new Date(badge.earnedAt).toLocaleDateString()}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </section>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '30px' }}>
         <button onClick={() => navigate('/journeys')}>
           ➕ Back to Journeys

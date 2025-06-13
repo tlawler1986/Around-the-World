@@ -72,16 +72,14 @@ export default function HomePage({ user, handleLogOut }) {
         </section>
       )}
 
-      {!user && (
-        <div style={{ marginTop: '2rem' }}>
-          <Link to="/signup">
-            <button>How Far have I traveled?</button>
-          </Link>
-          <Link to="/login" style={{ marginLeft: '1rem' }}>
-            <button>Login</button>
-          </Link>
-        </div>
-      )}
-    </main>
+    {!user && (
+    <div style={{ marginTop: '2rem' }}>
+      <Link to="/signup">
+        <button type="button" className="signup-button">
+          Start Tracking your Journeys!
+        </button>
+      </Link>
+    </div>
+  )}
+  </main>
   );}
-

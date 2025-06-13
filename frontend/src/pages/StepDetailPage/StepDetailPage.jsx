@@ -43,25 +43,26 @@ export default function StepDetailPage({ loggedInUsername }) {
   return (
     <div style={{ padding: '20px', maxWidth: '700px', margin: 'auto' }}>
       <h1>{step.title || 'N/A'}</h1>
+      <section className='stepDetail-section'>
+        <table border="1" cellPadding="8" style={{ width: '100%', marginBottom: '20px' }}>
+          <tbody>
+            <tr>
+              <th style={{ textAlign: 'left' }}>Steps</th>
+              <td>{step.steps || 'N/A'}</td>
+            </tr>
+            <tr>
+              <th style={{ textAlign: 'left' }}>Date</th>
+              <td>{step.date ? new Date(step.date).toLocaleDateString() : 'N/A'}</td>
+            </tr>
+            <tr>
+              <th style={{ textAlign: 'left' }}>Location</th>
+              <td>{step.location || 'N/A'}</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
 
-      <table border="1" cellPadding="8" style={{ width: '100%', marginBottom: '20px' }}>
-        <tbody>
-          <tr>
-            <th style={{ textAlign: 'left' }}>Steps</th>
-            <td>{step.steps || 'N/A'}</td>
-          </tr>
-          <tr>
-            <th style={{ textAlign: 'left' }}>Date</th>
-            <td>{step.date ? new Date(step.date).toLocaleDateString() : 'N/A'}</td>
-          </tr>
-          <tr>
-            <th style={{ textAlign: 'left' }}>Location</th>
-            <td>{step.location || 'N/A'}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '15px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginTop: '15px' }}>
         <button onClick={handleEditStep}>✏️ Edit Step</button>
         <button onClick={handleBackToSteps}>⬅️ Back to Steps</button>
       </div>
