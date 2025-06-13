@@ -30,7 +30,13 @@ const journeySchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true
-  }
+  },
+   comments: [
+    {
+      name: String,
+      text: String,
+      createdAt: { type: Date, default: Date.now },
+    }]
 }, {
   timestamps: true
 });

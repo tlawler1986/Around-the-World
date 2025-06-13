@@ -45,11 +45,13 @@ export default function HomePage({ user, handleLogOut }) {
       <h1>Around the World</h1>
 
       {!user && (
-        <p>
-          Are you an avid traveler, or someone that just keeps track of their daily steps? Well, this
-          is a fun little app that takes those distances and computes how many times you have traveled
-          around the globe.
-        </p>
+        <section className="homeStats-section">
+          <p>
+            Are you an avid traveler, or someone that just keeps track of their daily steps? Well, this
+            is a fun little app that takes those distances and computes how many times you have traveled
+            around the globe.
+          </p>
+        </section>
       )}
 
       {loading && <p>Loading total traveled stats...</p>}
@@ -60,11 +62,13 @@ export default function HomePage({ user, handleLogOut }) {
           style={{ marginTop: '2rem', borderTop: '1px solid #ccc', paddingTop: '1rem' }}
         >
           <h2>Total Distance Traveled by {userCount ?? '...'} Users</h2>
-          <p>
-            <strong>{totalMilesTraveled.toFixed(2)}</strong> miles traveled collectively.
-          </p>
-          <p>That's about <strong>{timesAroundEarth.toFixed(2)}</strong> times around the Earth!</p>
-          <p>Or <strong>{percentageAroundEarth}%</strong> of the way around the globe.</p>
+          <section className="homeStats-section">
+            <p>
+              <strong>{totalMilesTraveled.toFixed(2)}</strong> miles traveled collectively.
+            </p>
+            <p> That's about <strong>{timesAroundEarth.toFixed(2)}</strong> times around the Earth!</p>
+            <p> Or <strong>{percentageAroundEarth}%</strong> of the way around the globe.</p>
+          </section>
         </section>
       )}
 

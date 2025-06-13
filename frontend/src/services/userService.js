@@ -9,3 +9,7 @@ export function getRecentUsers() {
 export function getUserById(id) {
   return sendRequest(`${BASE_URL}/${id}`);
 }
+
+export function getCurrentUser() {
+  return sendRequest(`${BASE_URL}/me`);
+}

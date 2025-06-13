@@ -56,25 +56,14 @@ export default function JourneyListPage({ userId }) {
         justifyContent: 'flex-start'
       }}
     >
-  <div style={{ display: 'flex', justifyContent: 'flex-start', paddingLeft: 0 }}>
-    <button
-      onClick={() => navigate('/total')}
-      style={{
-      width: '300px',     
-      height: '300px',
-      borderRadius: '50%',  
-      backgroundColor: '#4CAF50',
-      color: 'white',
-      fontSize: '25px',
-      border: 'none',
-      cursor: 'pointer',
-      display: 'flex',      
-      justifyContent: 'center',
-      alignItems: 'center',
-      textAlign: 'center',
-      padding: 0,
-    }}>Compute My Results!</button>
+  <section className="compute-button-section">
+    <div className="compute-button-wrapper">
+      <button className="compute-button-icon" onClick={() => navigate('/total')}>
+        <span className="globe">🌍</span>
+      </button>
+        <span className="compute-button-label">Compute My Results</span>
     </div>
+  </section>
 
       <div style={{ flexGrow: 1, padding: '0 40px', marginTop: '0', marginBottom: '100px' }}>
         <h2>Journeys</h2>
@@ -83,34 +72,35 @@ export default function JourneyListPage({ userId }) {
             Error: {journeysError}
           </div>
         )}
-       <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
-          <table border="1" cellPadding="5" style={{ marginBottom: '20px', borderTop: 'none', minWidth: '600px' }}>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Start Location</th>
-              <th>End Location</th>
-              <th>Distance (mi)</th>
-              <th>Date</th>
-              <th>Mode of Transportation</th>
-            </tr>
-          </thead>
-          <tbody>
-            {journeys.length > 0 ? (
-              journeys.map(journey => (
-                <tr key={journey._id}>
-                  <td>
-                    <Link to={`/journeys/${journey._id}/detail`}>
-                      {journey.title || 'N/A'}
-                    </Link>
-                  </td>
-                  <td>{journey.start_location_id || 'N/A'}</td>
-                  <td>{journey.end_location_id || 'N/A'}</td>
-                  <td>{journey.distance_mi || 'N/A'}</td>
-                  <td>{journey.date ? new Date(journey.date).toLocaleDateString() : 'N/A'}</td>
-                  <td>{journey['mode of transportation'] || 'N/A'}</td>
-                </tr>
-              ))
+        <section className="journeyList-section">
+          <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
+            <table border="1" cellPadding="5" style={{ marginBottom: '20px', borderTop: 'none', minWidth: '600px' }}>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Start Location</th>
+                <th>End Location</th>
+                <th>Distance (mi)</th>
+                <th>Date</th>
+                <th>Mode of Transportation</th>
+              </tr>
+            </thead>
+            <tbody>
+              {journeys.length > 0 ? (
+                journeys.map(journey => (
+                  <tr key={journey._id}>
+                    <td>
+                      <Link to={`/journeys/${journey._id}/detail`}>
+                        {journey.title || 'N/A'}
+                      </Link>
+                    </td>
+                    <td>{journey.start_location_id || 'N/A'}</td>
+                    <td>{journey.end_location_id || 'N/A'}</td>
+                    <td>{journey.distance_mi || 'N/A'}</td>
+                    <td>{journey.date ? new Date(journey.date).toLocaleDateString() : 'N/A'}</td>
+                    <td>{journey['mode of transportation'] || 'N/A'}</td>
+                  </tr>
+                ))
             ) : (
               <tr>
                 <td colSpan="6" style={{ textAlign: 'center', fontStyle: 'italic' }}>
@@ -121,6 +111,7 @@ export default function JourneyListPage({ userId }) {
           </tbody>
         </table>
         </div>
+      </section>
         
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
           <button onClick={handleAddJourney}>➕ Add Journey</button>
@@ -132,40 +123,42 @@ export default function JourneyListPage({ userId }) {
             Error: {stepsError}
           </div>
         )}
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <table border="1" cellPadding="5">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Location</th>
-              <th>Steps</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {steps.length > 0 ? (
-              steps.map(step => (
-                <tr key={step._id}>
-                  <td>
-                    <Link to={`/steps/${step._id}/detail`}>
-                      {step.title || 'N/A'}
-                    </Link>
-                  </td>
-                  <td>{step.location || 'N/A'}</td>
-                  <td>{step.steps || 'N/A'}</td>
-                  <td>{step.date ? new Date(step.date).toLocaleDateString() : 'N/A'}</td>
-                </tr>
-              ))
-            ) : (
+        <section className="journeyList-section">
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <table border="1" cellPadding="5">
+            <thead>
               <tr>
-                <td colSpan="4" style={{ textAlign: 'center', fontStyle: 'italic' }}>
-                  {stepsError ? 'Unable to load steps' : 'No steps found.'}
-                </td>
+                <th>Title</th>
+                <th>Location</th>
+                <th>Steps</th>
+                <th>Date</th>
               </tr>
-            )}
-          </tbody>
-        </table>
-        </div>
+            </thead>
+            <tbody>
+              {steps.length > 0 ? (
+                steps.map(step => (
+                  <tr key={step._id}>
+                    <td>
+                      <Link to={`/steps/${step._id}/detail`}>
+                        {step.title || 'N/A'}
+                      </Link>
+                    </td>
+                    <td>{step.location || 'N/A'}</td>
+                    <td>{step.steps || 'N/A'}</td>
+                    <td>{step.date ? new Date(step.date).toLocaleDateString() : 'N/A'}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" style={{ textAlign: 'center', fontStyle: 'italic' }}>
+                    {stepsError ? 'Unable to load steps' : 'No steps found.'}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+          </div>
+          </section>
        
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
           <button onClick={handleAddStep}>➕ Add Step</button>
@@ -173,4 +166,3 @@ export default function JourneyListPage({ userId }) {
       </div>
     </div>
   );}
-

@@ -4,6 +4,7 @@
   align-items: center;
   padding: 2vmin;
   font-size: 2vmin;
+  background-color: lightblue;
 }
 
 .NavBar {
@@ -15,12 +16,12 @@
   }
 
   a:hover {
-    background-color: #1a1a1a;
+    background-color: blue;
     color: whitesmoke;
   }
 
   a.active {
-    background-color: rebeccapurple;
+    background-color: green;
     color: whitesmoke;
   }
 

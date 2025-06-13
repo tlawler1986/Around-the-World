@@ -4,6 +4,7 @@ const Journey = require('../models/Journey');
 const ensureLoggedIn = require('../middleware/ensureLoggedIn');
 const Step = require('../models/Step');
 const { awardBadges } = require('../models/Badge');
+const { default: mongoose } = require('mongoose');
 
 // ----------- PUBLIC ROUTES -----------
 
@@ -21,7 +22,7 @@ router.get('/user/:userId', async (req, res) => {
 // GET /api/journeys/:id - get one journey by id (public)
 router.get('/:id', async (req, res) => {
   try {
-    const journey = await Journey.findById(req.params.id);
+    const journey = await Journey.findById(req.params.id).populate('user_id', 'name');
     if (!journey) {
       return res.status(404).json({ error: 'Journey not found' });
     }
@@ -33,7 +34,6 @@ router.get('/:id', async (req, res) => {
 });
 
 // ----------- PROTECTED ROUTES -----------
-// all routes below require login
 router.use(ensureLoggedIn);
 
 // GET /api/journeys - get journeys for logged-in user
@@ -103,6 +103,57 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to delete journey' });
   }
 });
+
+// POST /api/journeys/:journeyId/comments - add comment to journey
+router.post('/:journeyId/comments', async (req, res) => {
+  try {
+    const { journeyId } = req.params;
+    const { text } = req.body;
+    if (!text) {
+      return res.status(400).json({ message: 'Text is required.' });
+    }
+    const journey = await Journey.findById(journeyId);
+    if (!journey) return res.status(404).json({ message: 'Journey not found.' });
+
+    const newComment = { 
+      _id: new mongoose.Types.ObjectId(),
+      name: req.user.name,
+      text,
+      createdAt: new Date() };
+    journey.comments.push(newComment);
+    await journey.save();
+
+    res.status(201).json(newComment);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+
+// DELETE /api/journeys/:journeyId/comments/:commentId - delete comment from journey
+router.delete('/:journeyId/comments/:commentId', ensureLoggedIn, async (req, res) => {
+  try {
+    const { journeyId, commentId } = req.params;
+    const userId = req.user._id.toString();
+    const journey = await Journey.findById(journeyId);
+    if (!journey) return res.status(404).json({ error: 'Journey not found' });
+    if (journey.user_id.toString() !== userId) {
+      return res.status(403).json({ error: 'Not authorized to delete comments on this journey' });
+    }
+    const initialLength = journey.comments.length;
+    journey.comments = journey.comments.filter(c => c._id?.toString() !== commentId);
+    const finalLength = journey.comments.length;
+    if (initialLength === finalLength) {
+      return res.status(404).json({ error: 'Comment not found' });
+    }
+    await journey.save();
+    res.json({ message: 'Comment deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to delete comment' });
+  }
+});
+
 
 module.exports = router;
 

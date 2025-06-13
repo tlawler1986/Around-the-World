@@ -25,3 +25,11 @@ export function remove(id) {
 export function getJourneysByUserId(userId) {
   return sendRequest(`/api/journeys/user/${userId}`);
 }
+
+export function addComment(journeyId, commentData) {
+  return sendRequest(`${BASE_URL}/${journeyId}/comments`, 'POST', commentData);
+}
+
+export function deleteComment(journeyId, commentId) {
+  return sendRequest(`${BASE_URL}/${journeyId}/comments/${commentId}`, 'DELETE');
+}

@@ -18,8 +18,7 @@ export default function StepDetailPage() {
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(null);
 
-  console.log('Submitting step:', payload);
-  useEffect(() => {
+   useEffect(() => {
     async function fetchStep() {
       try {
         const data = await stepService.getById(id);

@@ -27,29 +27,6 @@ export default function StepDetailPage({ loggedInUsername }) {
     fetchStep();
   }, [id]);
 
-  async function handleAddComment(e) {
-    e.preventDefault();
-    if (!newCommentText.trim()) return;
-    setSubmitting(true);
-
-    try {
-      const newComment = await stepService.addCommentToStep(id, {
-        username: loggedInUsername,
-        text: newCommentText.trim(),
-      });
-
-      setStep(prev => ({
-        ...prev,
-        comments: [...(prev.comments || []), newComment],
-      }));
-      setNewCommentText('');
-    } catch {
-      alert('Failed to add comment. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
   function handleEditStep() {
     if (!step?._id) return;
     navigate(`/steps/${step._id}`);
@@ -80,39 +57,6 @@ export default function StepDetailPage({ loggedInUsername }) {
           <tr>
             <th style={{ textAlign: 'left' }}>Location</th>
             <td>{step.location || 'N/A'}</td>
-          </tr>
-          <tr>
-            <th style={{ textAlign: 'left', verticalAlign: 'top' }}>Comments</th>
-            <td>
-              {step.comments && step.comments.length > 0 ? (
-                <ul style={{ marginTop: 0, paddingLeft: '20px' }}>
-                  {step.comments.map(comment => (
-                    <li key={comment._id || comment.id}>
-                      <strong>{comment.username || 'Anonymous'}:</strong> {comment.text || comment.content || 'No comment text.'}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No comments available.</p>
-              )}
-
-              <form onSubmit={handleAddComment} style={{ marginTop: '15px' }}>
-                <textarea
-                  value={newCommentText}
-                  onChange={e => setNewCommentText(e.target.value)}
-                  rows={3}
-                  cols={50}
-                  placeholder="Add a comment..."
-                  required
-                  disabled={submitting}
-                  style={{ resize: 'vertical' }}
-                />
-                <br />
-                <button type="submit" disabled={submitting} style={{ marginTop: '8px' }}>
-                  {submitting ? 'Submitting...' : 'Add Comment'}
-                </button>
-              </form>
-            </td>
           </tr>
         </tbody>
       </table>

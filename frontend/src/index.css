@@ -1,31 +1,3 @@
-:root {
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color: #1a1a1a;
-  background-color: whitesmoke;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-}
-
-h1,
-h2 {
-  text-align: center;
-}
-
 button {
   border: 0.5vmin solid #1a1a1a;
   border-radius: 0.5vmin;
@@ -57,8 +29,7 @@ form {
 }
 
 input,
-select,
-textarea {
+select {
   padding: 0.7vmin;
   font-size: 2vmin;
   border: 0.3vmin solid #1a1a1a;
@@ -72,10 +43,6 @@ form>button:last-child {
 label {
   font-size: 2vmin;
   font-weight: bold;
-}
-
-h2 {
-  text-align: center;
 }
 
 .error-message {

@@ -35,7 +35,7 @@ export default function SignUpPage({ setUser }) {
     <>
       <h2>Sign Up!</h2>
       <form autoComplete="off" onSubmit={handleSubmit}>
-        <label>Name</label>
+        <label>UserName</label>
         <input
           type="text"
           name="name"
@@ -59,7 +59,7 @@ export default function SignUpPage({ setUser }) {
           onChange={handleChange}
           required
         />
-        <label>Confirm</label>
+        <label>Confirm Password</label>
         <input
           type="password"
           name="confirm"

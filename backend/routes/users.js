@@ -1,6 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+const ensureLoggedIn = require('../middleware/ensureLoggedIn');
+
+router.get('/me', ensureLoggedIn, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('name email');
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch user info' });
+  }
+});
 
 // GET /api/users/recent
 router.get('/recent', async (req, res) => {

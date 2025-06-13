@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import * as journeyService from '../../services/journeyService';
+import * as userService from '../../services/userService';
+import { getUser } from '../../services/authService';
 
 export default function JourneyDetailPage() {
   const { id } = useParams();
@@ -9,12 +11,23 @@ export default function JourneyDetailPage() {
   const [journey, setJourney] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const currentUser = getUser();
 
   const [newCommentText, setNewCommentText] = useState('');
-  const [newCommentUsername, setNewCommentUsername] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function loadUser() {
+      try {
+        const me = await userService.getCurrentUser();
+        setCurrentUser(me);
+      } catch {
+      }
+    }
+    loadUser();
+  }, []);
 
   useEffect(() => {
     async function fetchJourney() {
@@ -41,38 +54,39 @@ export default function JourneyDetailPage() {
     navigate('/journeys');
   }
 
-  /* Mock API call to add a comment, replace with your real service method
-  async function addComment(journeyId, username, text) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          _id: Date.now().toString(), // mock comment id
-          username,
-          text,
-        });
-      }, 500);
-    });} */
-  
+async function handleAddComment(e) {
+  e.preventDefault();
+  if (!newCommentText.trim()) return;
+  setSubmitting(true);
+  try {
+    const newComment = await journeyService.addComment(journey._id, {
+      text: newCommentText.trim()
+    });
+    setJourney(prev => ({
+      ...prev,
+      comments: [...(prev.comments || []), newComment],
+    }));
+    setNewCommentText('');
+  } catch (err) {
+    alert('Failed to add comment. Please try again.');
+  } finally {
+    setSubmitting(false);
+  }
+}
 
-  async function handleAddComment(e) {
-    e.preventDefault();
-    if (!newCommentText.trim() || !newCommentUsername.trim()) return;
-
-    setSubmitting(true);
-    try {
-      const newComment = await addComment(journey._id, newCommentUsername.trim(), newCommentText.trim());
+function handleDeleteComment(commentId) {
+  if (!window.confirm('Are you sure you want to delete this comment?')) return;
+  journeyService.deleteComment(journey._id, commentId)
+    .then(() => {
       setJourney(prev => ({
         ...prev,
-        comments: [...(prev.comments || []), newComment],
+        comments: prev.comments.filter(c => c._id !== commentId && c.id !== commentId),
       }));
-      setNewCommentText('');
-      // Optionally clear username or keep it
-    } catch (err) {
-      alert('Failed to add comment. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
-  }
+    })
+    .catch(() => {
+      alert('Failed to delete comment. Please try again.');
+    });
+}
 
   if (loading) return <p>Loading journey details...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
@@ -81,51 +95,51 @@ export default function JourneyDetailPage() {
   return (
     <div style={{ padding: '20px', maxWidth: '700px', margin: 'auto' }}>
       <h1>{journey.title || 'N/A'}</h1>
-      
-      <table border="1" cellPadding="8" style={{ width: '100%', marginBottom: '20px' }}>
-        <tbody>
-          <tr>
-            <th style={{ textAlign: 'left' }}>Start Location</th>
-            <td>{journey.startLocation || journey.start_location_id || 'N/A'}</td>
-          </tr>
-          <tr>
-            <th style={{ textAlign: 'left' }}>End Location</th>
-            <td>{journey.endLocation || journey.end_location_id || 'N/A'}</td>
-          </tr>
-          <tr>
-            <th style={{ textAlign: 'left' }}>Distance (mi)</th>
-            <td>{journey.distanceMi || journey.distance_mi || 'N/A'}</td>
-          </tr>
-          <tr>
-            <th style={{ textAlign: 'left' }}>Date</th>
-            <td>{journey.date ? new Date(journey.date).toLocaleDateString() : 'N/A'}</td>
-          </tr>
-          <tr>
-            <th style={{ textAlign: 'left' }}>Mode of Transportation</th>
-            <td>{journey.modeOfTransportation || journey['mode of transportation'] || 'N/A'}</td>
-          </tr>
-          {journey.description && (
+      <section className="journeyDetail-section">
+        <table border="1" cellPadding="8" style={{ width: '100%', marginBottom: '20px' }}>
+          <tbody>
             <tr>
-              <th style={{ textAlign: 'left' }}>Description</th>
-              <td>{journey.description}</td>
+              <th style={{ textAlign: 'left' }}>Start Location</th>
+              <td>{journey.startLocation || journey.start_location_id || 'N/A'}</td>
             </tr>
-          )}
+            <tr>
+              <th style={{ textAlign: 'left' }}>End Location</th>
+              <td>{journey.endLocation || journey.end_location_id || 'N/A'}</td>
+            </tr>
+            <tr>
+              <th style={{ textAlign: 'left' }}>Distance (mi)</th>
+              <td>{journey.distanceMi || journey.distance_mi || 'N/A'}</td>
+            </tr>
+            <tr>
+              <th style={{ textAlign: 'left' }}>Date</th>
+              <td>{journey.date ? new Date(journey.date).toLocaleDateString() : 'N/A'}</td>
+            </tr>
+            <tr>
+              <th style={{ textAlign: 'left' }}>Mode of Transportation</th>
+              <td>{journey.modeOfTransportation || journey['mode of transportation'] || 'N/A'}</td>
+            </tr>
+          
           <tr>
-            <th style={{ textAlign: 'left', verticalAlign: 'top' }}>Comments</th>
-            <td>
-              {journey.comments && journey.comments.length > 0 ? (
-                <ul style={{ marginTop: 0, paddingLeft: '20px' }}>
-                  {journey.comments.map(comment => (
-                    <li key={comment._id || comment.id}>
-                      <strong>{comment.username || 'Anonymous'}:</strong> {comment.text || comment.content || 'No comment text.'}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No comments available.</p>
-              )}
+          <th style={{ textAlign: 'left', verticalAlign: 'top' }}>Comments</th>
+          <td>
+            {journey.comments && journey.comments.length > 0 ? (
+              <ul style={{ marginTop: 0, paddingLeft: '20px' }}>
+                {journey.comments.map((comment, idx) => (
+                  <li key={comment._id || idx}>
+                    <strong>{comment.name || 'Anonymous'}:</strong> {comment.text || comment.content || 'No comment text.'}
+                    {journey.user_id?._id?.toString() === currentUser?._id && (
+                      <button
+                        style={{ marginLeft: '10px', color: 'red' }}
+                        onClick={() => handleDeleteComment(comment._id || comment.id)}
+                      > Delete </button>)}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No comments available.</p>
+                )}
 
-              <form onSubmit={handleAddComment} style={{ marginTop: '15px' }}>
+              <form id='comment-form' onSubmit={handleAddComment} style={{ marginTop: '15px' }}>
                 <div style={{ marginBottom: '8px' }}>
                   <label>
                     Add Comment:{' '}
@@ -139,14 +153,17 @@ export default function JourneyDetailPage() {
                     />
                   </label>
                 </div>
-                <button type="submit" disabled={submitting}>
+              </form>
+              <div style={{ textAlign: 'center', marginTop: '8px' }}>
+                <button type="submit" form="comment-form" disabled={submitting}>
                   {submitting ? 'Submitting...' : 'Add Comment'}
                 </button>
-              </form>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
+    </section>
 
       <div style={{ display: 'flex', justifyContent: 'center', gap: '15px' }}>
         {!readOnly && (

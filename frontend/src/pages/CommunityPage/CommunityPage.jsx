@@ -21,17 +21,20 @@ export default function CommunityPage() {
   return (
     <div style={{ padding: '20px' }}>
       <h1>Community</h1>
-      <ul>
-        {users.map(user => (
-          <li
-            key={user._id}
-            style={{ cursor: 'pointer', color: 'blue' }}
-            onClick={() => navigate(`/users/${user._id}/journeys`)}
-          >
-            {user.name}
-          </li>
-        ))}
-      </ul>
+      <h2>Where have other Users Journeyed to??</h2>
+      <section className="communityUsers-section">
+        <ul>
+          {users.map(user => (
+            <li
+              key={user._id}
+              style={{ cursor: 'pointer', color: 'blue' }}
+              onClick={() => navigate(`/users/${user._id}/journeys`)}
+            >
+              {user.name}
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }
