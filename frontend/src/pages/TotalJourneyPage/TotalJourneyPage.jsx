@@ -56,6 +56,7 @@ useEffect(() => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div style={{ color: 'red' }}>{error}</div>;
 
+  // Reduce method to iterate through journeys/steps to accumlate total miles and steps
   const totalJourneyMiles = journeys.reduce((sum, journey) => sum + (journey.distance_mi || 0), 0);
   const totalSteps = steps.reduce((sum, step) => sum + (step.steps || 0), 0);
   const feetPerStep = 2.5;
