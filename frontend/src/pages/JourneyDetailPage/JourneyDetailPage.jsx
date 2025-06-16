@@ -125,13 +125,16 @@ function handleDeleteComment(commentId) {
             {journey.comments && journey.comments.length > 0 ? (
               <ul style={{ marginTop: 0, paddingLeft: '20px' }}>
                 {journey.comments.map((comment, idx) => (
-                  <li key={comment._id || idx}>
-                    <strong>{comment.name || 'Anonymous'}:</strong> {comment.text || comment.content || 'No comment text.'}
+                  <li key={comment._id || idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <strong>{comment.name || 'Anonymous'}:</strong> {comment.text || comment.content || 'No comment text.'}
+                    </div>
                     {journey.user_id?._id?.toString() === currentUser?._id && (
-                      <button
-                        style={{ marginLeft: '10px', color: 'red' }}
+                      <button className="delete-comment-button"
+                        style={{ color: 'red', marginLeft: '10px' }}
                         onClick={() => handleDeleteComment(comment._id || comment.id)}
-                      > Delete </button>)}
+                      > 🗑️ </button>
+                    )}
                   </li>
                 ))}
               </ul>

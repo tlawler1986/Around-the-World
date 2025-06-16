@@ -246,3 +246,13 @@ button:hover {
 .login-button {
   margin-left: 1rem;
 }
+
+.delete-comment-button {
+  align-items: right;
+  background: none;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}

@@ -49,7 +49,6 @@ async function awardBadges(userId, totalMilesTraveled) {
   return newBadges; 
 }
 
-
 module.exports = {
   Badge,
   awardBadges,
