@@ -248,7 +248,6 @@ button:hover {
 }
 
 .delete-comment-button {
-  align-items: right;
   background: none;
   color: white;
   border: none;
