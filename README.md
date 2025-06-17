@@ -1,5 +1,5 @@
 <div align="center" id="banner">
-    <img src='/images/banner.jpg'>
+    <img src='/image/banner.jpg'>
 </div>
 
 # Around the World 🌏
@@ -12,8 +12,8 @@
 
  # 📷 Screenshot
 
- **Home Page** <img src='/images/home.png" alt="screenshot'>
- **Inventory Page** <img src='/images/journeys.png" alt="screenshot'>
+ **Home Page** <img src='/image/home.png" alt="screenshot'>
+ **Inventory Page** <img src='/image/journeys.png" alt="screenshot'>
 
  # 🖥️ Technologies Used
 
