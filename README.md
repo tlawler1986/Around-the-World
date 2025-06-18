@@ -12,8 +12,8 @@
 
  # 📷 Screenshot
 
- **Home Page** <img src="image/home.png" alt="screenshot">
- **Inventory Page** <img src="image/journeys.png" alt="screenshot">
+ **Home Page** <img src="image/homepage.png" alt="screenshot">
+ **Inventory Page** <img src="image/journeypage.png" alt="screenshot">
 
  # 🖥️ Technologies Used
 
