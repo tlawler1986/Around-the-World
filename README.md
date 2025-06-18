@@ -37,3 +37,4 @@
  - [   ] Adding a search box, so a user can search for a specific journey regarding the title or ending location.  It'll show all users that have journeys matching the search criteria.
  - [   ] Adding the ability to upload photos to a user's journey detail page.  
  - [   ] Adding a calculator for Europeans to use to convert KM to Miles.
+ - [   ] Adding an API/GeoLocation function to auto input the Miles of trips from Starting location to End Location.
