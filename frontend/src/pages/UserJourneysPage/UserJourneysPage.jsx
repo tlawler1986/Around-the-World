@@ -29,7 +29,7 @@ export default function UserJourneysPage() {
       <h2>{owner ? `${owner.name}'s Journeys` : 'User Journeys'}</h2>
 
       {journeys.length === 0 ? (
-        <p>No journeys found</p>
+        <p style={{ color: 'white'}}>No journeys found</p>
       ) : (
         <>
           <section className="userjourney-section">

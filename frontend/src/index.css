@@ -20,14 +20,6 @@ button:disabled {
   background-color: grey;
 }
 
-form {
-  display: grid;
-  gap: 1.2vmin;
-  padding: 4vmin;
-  border: 0.5vmin solid #1a1a1a;
-  border-radius: 1vmin;
-}
-
 input,
 select {
   padding: 0.7vmin;
