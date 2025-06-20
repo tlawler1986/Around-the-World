@@ -24,6 +24,7 @@
  - Node.js/Express.js
  - MongoDB
  - Mongoose
+ - React
  - Heroku
  - GitHub
 
