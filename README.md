@@ -5,7 +5,7 @@
 # Around the World 🌏
 **Created by Tim Lawler**
 
-[Click to visit Around the World]()
+[Click to visit Around the World](https://around-the-worlds-381fc888536e.herokuapp.com/)
 
 ## 📘 Description
  Are you an avid traveler, or someone that just keeps track of their daily steps? Well, this is a fun little app that takes those distances and computes how many times you have traveled around the globe.  
